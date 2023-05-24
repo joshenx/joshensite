@@ -27,7 +27,7 @@ export default function Experience()
     const [degraded, degrade] = useState(false);
     
     return <>    
-        {/* <Perf position="top-left" />     */}
+        <Perf position="top-left" />    
         <color attach="background" />
 
         <OrbitControls

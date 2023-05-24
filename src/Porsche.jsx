@@ -12,7 +12,7 @@ import { useGLTF } from "@react-three/drei";
 import { useControls } from 'leva';
 
 export function Porsche(props) {
-  const { nodes, materials } = useGLTF("/free_1975_porsche_911_930_turbo.glb");
+  const { nodes, materials } = useGLTF("/porschecompressed2.glb");
   const ref = useRef();
   const { paintColor } = useControls('Paint Color', {
     paintColor: {
@@ -23,14 +23,11 @@ export function Porsche(props) {
   useLayoutEffect(() => {
     materials.paint.color.set(paintColor)
     materials.paint.metalness = 0.45
-    materials.paint.roughness = 0.5
-    materials.paint.clearcoat = 1
-    materials.paint.envMapIntensity = 2
-    materials.paint.aoMapIntensity = 1.5
+    materials.paint.roughness = 0.4
+    materials.paint.clearcoat = 0.8
+    materials.paint.envMapIntensity = 1
+    materials.paint.aoMapIntensity = 0.8
     materials.paint.roughnessMapIntensity = 2
-    materials.coat.envMapIntensity = 4
-    materials.coat.metalness = 1
-    materials.coat.roughness = 0.5
     materials.material_0.roughness = 1
     materials['930_chromes'].metalness = 1
     materials['930_chromes'].roughness = 0.3
@@ -133,7 +130,7 @@ export function Porsche(props) {
             geometry={nodes.Object_30.geometry}
             material={materials.paint}
           />
-          <mesh geometry={nodes.Object_32.geometry} material={materials.coat} />
+          {/* <mesh geometry={nodes.Object_32.geometry} material={materials.coat} /> */}
           <group
             position={[0.251, 1.327, 1.325]}
             rotation={[0.615, 0.436, -0.099]}
@@ -377,14 +374,6 @@ export function Porsche(props) {
           <mesh
             geometry={nodes.Object_97.geometry}
             material={materials["930_lights"]}
-          />
-          <mesh
-            geometry={nodes.Object_99.geometry}
-            material={materials["930_chromes"]}
-          />
-          <mesh
-            geometry={nodes.Object_101.geometry}
-            material={materials["930_chromes"]}
           />
           <mesh
             geometry={nodes.Object_103.geometry}

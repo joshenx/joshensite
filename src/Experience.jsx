@@ -1,9 +1,9 @@
 import * as THREE from 'three'
-import { OrbitControls, ContactShadows, MeshReflectorMaterial, PerformanceMonitor, Text, Float, Environment, Center } from '@react-three/drei'
+import { OrbitControls, Html, SpotLight, useDepthBuffer, MeshReflectorMaterial, PerformanceMonitor, Text, Float, Environment, Center } from '@react-three/drei'
 import { Porsche } from './Porsche'
 import { Lightformers } from './Lightformers'
 import { useState, useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import { Vector3 } from 'three'
 import { useControls } from 'leva'
 import { Perf } from 'r3f-perf'
@@ -18,16 +18,16 @@ export default function Experience()
     //     minPolarAngle: { value: Math.PI/4, min: 0, max: Math.PI*2 },
     //     maxPolarAngle: { value: Math.PI/2, min: 0, max: Math.PI*2 },
     // })
-
     const eventHandler = (event) =>{
         setNewPointLightPos(new Vector3(event.point.x, LIGHT_HEIGHT, event.point.z));
         event.stopPropagation();
     }
 
     const [degraded, degrade] = useState(false);
-    
+    const links = ["DESIGN", "MUSIC", "RESUME"];
+
     return <>    
-        <Perf position="top-left" />    
+        <Perf position="bottom-left" />    
         <color attach="background" />
 
         <OrbitControls
@@ -46,6 +46,9 @@ export default function Experience()
         {/* <fog attach="fog" color={fogColor} near={1} far={fogFar} /> */}
         
         {/* LIGHTS */}
+        <MovingSpot color="#ffffff" position={[-3, 5, 1]} />
+        <MovingSpot color="#ffffff" position={[5, 5, 0]} />
+
         <ambientLight intensity={0.5} />
         <directionalLight
             castShadow
@@ -112,6 +115,34 @@ export default function Experience()
                 PORTFOLIO
             </Text>
         </Float>
+        <Float rotationIntensity={ 0.4 } position = { [-2.5, 2, -1.5] } rotation= { [-0.3, 0.6, 0.2] } >
+        {[...Array(links.length).keys()].map((index) => {
+            return(
+            <Annotation key={index} position-y={index*(-0.8)}>
+                {links[index]}
+            </Annotation>);
+        })}
+        </Float>
     </>
 }
 
+function MovingSpot({ vec = new Vector3(), ...props }) {
+    const light = useRef()
+    const viewport = useThree((state) => state.viewport)
+    useFrame((state) => {
+      light.current.target.position.lerp(vec.set((state.mouse.x * viewport.width) / 2, (state.mouse.y * viewport.height) / 2, 0), 0.1)
+      light.current.target.updateMatrixWorld()
+    })
+    return <SpotLight castShadow ref={light} penumbra={1} distance={15} angle={0.35} attenuation={6} anglePower={4} intensity={4} {...props} />
+}
+
+function Annotation({ children, ...props }) {
+    return (
+      <Html
+        {...props}
+        transform
+        occlude="blending">
+        <button onClick={() => {console.log(children)}} className="annotation">{children}</button>
+      </Html>
+    )
+}

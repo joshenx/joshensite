@@ -2,13 +2,14 @@ import './style.css'
 import ReactDOM from 'react-dom/client'
 import { Canvas } from '@react-three/fiber'
 import Experience from './Experience.jsx'
+import Loader from './Loader.jsx'
 import { Suspense } from 'react'
 
 const root = ReactDOM.createRoot(document.querySelector('#root'))
 
 root.render(
     <>
-    <Suspense fallback={null}>
+    <Suspense fallback={<Loader />}>
         <Canvas
             style={{
                 position: "fixed"
@@ -18,8 +19,8 @@ root.render(
             camera={ {
                 fov: 45,
                 near: 0.1,
-                far: 1000,
-                position: [ -2, 1.5, 7 ]
+                far: 200,
+                position: [ -1, 1.5, 7 ]
             } }
         >
             <Experience />

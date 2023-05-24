@@ -52,6 +52,15 @@ canvas
     color: #fcfcfc;
   }
 
+  .loader {
+    position: fixed;
+    left: 50%;
+    bottom: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
+    color: #fcfcfc;
+  }
+
   .welcome-text {
     opacity: 40%;
     font-weight: 200;

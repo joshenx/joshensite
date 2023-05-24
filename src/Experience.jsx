@@ -33,14 +33,12 @@ export default function Experience()
         <OrbitControls
             enablePan={false}
             enableZoom={true}
-            minDistance={4}
-            maxDistance={9}
-            minPolarAngle={Math.PI/4}
+            minDistance={6}
+            maxDistance={15}
+            minPolarAngle={Math.PI/3}
             maxPolarAngle={Math.PI/2}
             dampingFactor={0.03}
             enableDamping
-            autoRotate
-            autoRotateSpeed={-0.2}
         />
 
         {/* <fog attach="fog" color={fogColor} near={1} far={fogFar} /> */}

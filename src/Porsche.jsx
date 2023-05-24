@@ -14,14 +14,14 @@ import { useControls } from 'leva';
 export function Porsche(props) {
   const { nodes, materials } = useGLTF("/porschecompressed2.glb");
   const ref = useRef();
-  const { paintColor } = useControls('Paint Color', {
-    paintColor: {
-      value: '#593979',
-    }
-  })
+  // const { paintColor } = useControls('Paint Color', {
+  //   paintColor: {
+  //     value: '#593979',
+  //   }
+  // })
 
   useLayoutEffect(() => {
-    materials.paint.color.set(paintColor)
+    materials.paint.color.set("#593979")
     materials.paint.metalness = 0.45
     materials.paint.roughness = 0.4
     materials.paint.clearcoat = 0.8
@@ -39,7 +39,7 @@ export function Porsche(props) {
     materials['930_lights'].emissiveIntensity = 50
     materials['930_tire'].color.set('black')
     materials['930_tire'].roughness = 0.7
-  }, [materials, paintColor])
+  }, [materials])
 
   return (
     <group {...props} dispose={null} ref={ref}>

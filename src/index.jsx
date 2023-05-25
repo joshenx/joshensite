@@ -11,6 +11,7 @@ root.render(
     <>
     <Suspense fallback={<Loader />}>
         <Canvas
+            dpr={[1, 2]}
             style={{
                 position: "fixed"
             }}

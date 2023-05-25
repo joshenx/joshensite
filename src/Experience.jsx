@@ -49,11 +49,8 @@ export default function Experience()
 
         <ambientLight intensity={0.5} />
         <directionalLight
-            castShadow
             intensity={2}
             position={[10, 6, 6]}
-            shadow-mapSize={[512, 512]}
-            shadow-normalBias={0.01}
         >
             <orthographicCamera attach="shadow-camera" left={-20} right={20} top={20} bottom={-20} />
         </directionalLight>
@@ -66,20 +63,6 @@ export default function Experience()
         <mesh scale={2} position={[-3, -0.95, -1]} rotation={[-Math.PI / 2, 0, Math.PI / 2.5]}>
             <ringGeometry args={[0.9, 1, 3, 1]} />
             <meshStandardMaterial color="white" roughness={0.75} />
-        </mesh>
-        <mesh position={[0, -0.95, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          
-          <MeshReflectorMaterial
-            blur={[400, 100]}
-            resolution={1024}
-            mixBlur={1}
-            mixStrength={10}
-            depthScale={1}
-            minDepthThreshold={0.85}
-            color="#aaaaaa"
-            metalness={1}
-            roughness={0.7}
-          />
         </mesh>
         
         <Center>

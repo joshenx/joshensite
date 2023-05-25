@@ -53,6 +53,7 @@ canvas
   }
 
   .loader {
+    text-align: center;
     position: fixed;
     left: 50%;
     bottom: 50%;
@@ -62,6 +63,7 @@ canvas
   }
 
   .welcome-text {
+    text-align: center;
     opacity: 40%;
     font-weight: 200;
     color: #fcfcfc;

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { OrbitControls, Html, SpotLight, useDepthBuffer, MeshReflectorMaterial, PerformanceMonitor, Text, Float, Environment, Center } from '@react-three/drei'
+import { OrbitControls, Html, SpotLight, Sparkles, PerformanceMonitor, Text, Float, Environment, Center } from '@react-three/drei'
 import { Porsche } from './Porsche'
 import { Lightformers } from './Lightformers'
 import { useState, useRef } from 'react'
@@ -55,6 +55,14 @@ export default function Experience()
             <orthographicCamera attach="shadow-camera" left={-20} right={20} top={20} bottom={-20} />
         </directionalLight>
 
+        <Sparkles
+            count={300}
+            speed={0.3}
+            size={3}
+            opacity={0.5}
+            position-y={4}
+            scale={[15, 10, 15]}
+        />
         {/* MESHES */}
         <mesh scale={2} position={[3, -0.95, -1.5]} rotation={[-Math.PI / 2, 0, Math.PI / 2.5]}>
             <ringGeometry args={[0.9, 1, 4, 1]} />

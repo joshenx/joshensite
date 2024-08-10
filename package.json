@@ -26,11 +26,16 @@
     "@splinetool/react-spline": "^2.2.6",
     "@splinetool/runtime": "^1.0.17",
     "@tabler/icons-react": "^2.44.0",
+    "cursor-effects": "^1.0.15",
+    "eslint": "^9.9.0",
+    "framer-motion": "^11.3.24",
     "lamina": "^1.1.23",
     "leva": "^0.9.34",
     "r3f-perf": "^6.6.3",
     "react": "18.2",
     "react-dom": "18.2",
+    "react95": "^4.0.0",
+    "styled-components": "^6.1.12",
     "three": "^0.148.0",
     "vercel": "^29.4.0"
   }

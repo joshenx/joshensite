@@ -18,6 +18,10 @@ const overlayTextStyles = css`
   text-transform: uppercase;
   letter-spacing: 5px;
   cursor: crosshair;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const LeftText = styled.a`

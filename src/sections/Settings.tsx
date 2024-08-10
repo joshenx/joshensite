@@ -72,6 +72,7 @@ const Settings = () => {
             menuMaxHeight={160}
             width={160}
             onChange={handleCursorTypeChange}
+            style={{ flex: 1 }}
           />
           <ToggleCursorButton onClick={toggleCursor}>
             {showCursor ? "Disable" : "Enable"} trail
@@ -80,7 +81,7 @@ const Settings = () => {
             <StyledTextInput
               variant="flat"
               value={emoji}
-              placeholder="Enter an emoji"
+              placeholder="Emoji"
               onChange={handleChange}
               disabled={!showCursor}
             />

@@ -1,16 +1,23 @@
 import Spline from "@splinetool/react-spline";
 import { motion, useScroll, useSpring } from "framer-motion";
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import styled from "styled-components";
 import FadeInWhenVisible from "./animations/FadeInWhenVisible";
-import { ColFlex, ResponsiveFlex, RowFlex } from "./components/Flex";
+import {
+  ColFlex,
+  FlexContainer,
+  ResponsiveFlex,
+  RowFlex,
+} from "./components/Flex";
 import OverlayContainer from "./components/OverlayContainer.js";
 import StyledCursor from "./components/StyledCursor";
 import { CursorProvider, useCursor } from "./context/CursorContext";
 import Loader from "./Loader.jsx";
 import Settings from "./sections/Settings";
-import WorkExperience from "./sections/WorkExperience.js";
+import WorkExperience from "./sections/WorkExperience";
 import useWindowSize from "./hooks/useMediaQuery.js";
+import Text from "./components/Text.js";
+import { ProgressBar } from "react95";
 
 export const Container = styled.div`
   height: 100vh;
@@ -42,7 +49,7 @@ const Section = styled.section`
   width: 100%;
 `;
 
-const ProgressBar = styled(motion.div)`
+const SideProgressBar = styled(motion.div)`
   position: fixed;
   top: -100vh;
   left: 0;
@@ -78,7 +85,25 @@ export const Title = styled.div`
   font-size: 2rem;
 `;
 
+const LoadingOverlay = styled(motion.div)`
+  // center text
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  background: black;
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1000;
+  pointer-events: none;
+`;
+
 const AppContent = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const { showCursor, emoji, cursorType } = useCursor();
   const { isMobile } = useWindowSize();
 
@@ -89,20 +114,39 @@ const AppContent = () => {
     restDelta: 0.001,
   });
 
+  const handleLoad = () => {
+    setIsLoading(false);
+  };
+
   return (
     <WidthLimit>
+      <LoadingOverlay
+        initial={{ opacity: 1 }}
+        animate={{ opacity: isLoading ? 1 : 0 }}
+        transition={{ duration: 2 }}
+      >
+        <ColFlex $gap={16}>
+          <ProgressBar
+            variant="tile"
+            value={isLoading ? 40 : 100}
+            style={{ width: "40vw" }}
+          />
+          {isLoading ? "Loading..." : "Hello!"}
+        </ColFlex>
+      </LoadingOverlay>
       <RowFlex $alignItems="stretch">
         <Spacer />
-        <ProgressBar style={{ scaleY }} />
+        <SideProgressBar style={{ scaleY }} />
         <Main>
           {showCursor && <StyledCursor emoji={emoji} cursorType={cursorType} />}
 
           <Section>
             <Container>
               <Frame>
-                <Suspense fallback={<Loader />}>
-                  <Spline scene="https://prod.spline.design/BQ8Xe7yObEeaN50O/scene.splinecode" />
-                </Suspense>
+                <Spline
+                  scene="https://prod.spline.design/BQ8Xe7yObEeaN50O/scene.splinecode"
+                  onLoad={handleLoad}
+                />
                 <OverlayContainer />
               </Frame>
             </Container>
@@ -134,7 +178,13 @@ const AppContent = () => {
           </ResponsiveFlex>
         </Main>
       </RowFlex>
-      <div className="noise"></div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 2 }}
+      >
+        <div className="noise"></div>
+      </motion.div>
     </WidthLimit>
   );
 };

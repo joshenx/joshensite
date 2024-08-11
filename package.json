@@ -27,6 +27,7 @@
     "@splinetool/runtime": "^1.0.17",
     "@tabler/icons-react": "^2.44.0",
     "cursor-effects": "^1.0.15",
+    "dayjs": "^1.11.12",
     "eslint": "^9.9.0",
     "framer-motion": "^11.3.24",
     "lamina": "^1.1.23",

@@ -8,9 +8,9 @@ import { Header } from "../App";
 import { useCursor } from "../context/CursorContext";
 
 const Container = styled(ColFlex).attrs({ $gap: 16 })`
-  height: 100vh;
   width: 100%;
   max-width: 1920px;
+  margin-top: 12px;
   padding: 32px;
 `;
 
@@ -64,7 +64,7 @@ const Settings = () => {
           </Text>
         )}
       </Header>
-      <GroupBox label="cursor">
+      <GroupBox label="cursor" style={{ width: "100%" }}>
         <RowFlex $gap={16}>
           <Select
             defaultValue={cursorType}

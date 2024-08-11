@@ -3,12 +3,14 @@ import { motion, useScroll, useSpring } from "framer-motion";
 import React, { Suspense } from "react";
 import styled from "styled-components";
 import FadeInWhenVisible from "./animations/FadeInWhenVisible";
-import { ColFlex, RowFlex } from "./components/Flex";
+import { ColFlex, ResponsiveFlex, RowFlex } from "./components/Flex";
 import OverlayContainer from "./components/OverlayContainer.js";
 import StyledCursor from "./components/StyledCursor";
 import { CursorProvider, useCursor } from "./context/CursorContext";
 import Loader from "./Loader.jsx";
 import Settings from "./sections/Settings";
+import WorkExperience from "./sections/WorkExperience.js";
+import useWindowSize from "./hooks/useMediaQuery.js";
 
 export const Container = styled.div`
   height: 100vh;
@@ -37,7 +39,6 @@ const Spacer = styled.div`
 
 const Section = styled.section`
   color: white;
-  height: 100vh;
   width: 100%;
 `;
 
@@ -65,11 +66,21 @@ const WidthLimit = styled.div`
 `;
 
 export const Header = styled.div`
+  overflow-wrap: break-word;
   font-size: 1.5rem;
+  max-width: 300px;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+`;
+
+export const Title = styled.div`
+  font-size: 2rem;
 `;
 
 const AppContent = () => {
   const { showCursor, emoji, cursorType } = useCursor();
+  const { isMobile } = useWindowSize();
 
   const { scrollYProgress } = useScroll();
   const scaleY = useSpring(scrollYProgress, {
@@ -96,11 +107,31 @@ const AppContent = () => {
               </Frame>
             </Container>
           </Section>
-          <FadeInWhenVisible>
-            <Section>
-              <Settings />
-            </Section>
-          </FadeInWhenVisible>
+          <ResponsiveFlex style={{ width: "100%" }}>
+            <FadeInWhenVisible
+              style={{
+                display: "flex",
+                width: isMobile ? "100%" : undefined,
+              }}
+            >
+              <Section>
+                <Settings />
+              </Section>
+            </FadeInWhenVisible>
+            <FadeInWhenVisible
+              style={{
+                display: "flex",
+                flexGrow: 1,
+                borderLeft: isMobile
+                  ? "none"
+                  : "2px solid rgba(255, 255, 255, 0.3)",
+              }}
+            >
+              <Section>
+                <WorkExperience />
+              </Section>
+            </FadeInWhenVisible>
+          </ResponsiveFlex>
         </Main>
       </RowFlex>
       <div className="noise"></div>

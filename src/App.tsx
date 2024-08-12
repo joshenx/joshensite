@@ -1,6 +1,6 @@
 import Spline from "@splinetool/react-spline";
 import { motion, useScroll, useSpring } from "framer-motion";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import styled from "styled-components";
 import FadeInWhenVisible from "./animations/FadeInWhenVisible";
 import {
@@ -106,8 +106,14 @@ const AppContent = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { showCursor, emoji, cursorType } = useCursor();
   const { isMobile } = useWindowSize();
-
   const { scrollYProgress } = useScroll();
+
+  useEffect(() => {
+    if (!isLoading) {
+      scrollYProgress.set(0);
+    }
+  }, [isLoading]);
+
   const scaleY = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
@@ -120,26 +126,30 @@ const AppContent = () => {
 
   return (
     <WidthLimit>
-      <LoadingOverlay
-        initial={{ opacity: 1 }}
-        animate={{ opacity: isLoading ? 1 : 0 }}
-        transition={{ duration: 2 }}
-      >
-        <ColFlex $gap={16}>
-          <ProgressBar
-            variant="tile"
-            value={isLoading ? 40 : 100}
-            style={{ width: "40vw" }}
-          />
-          {isLoading ? "Loading..." : "Hello!"}
-        </ColFlex>
-      </LoadingOverlay>
       <RowFlex $alignItems="stretch">
         <Spacer />
         <SideProgressBar style={{ scaleY }} />
-        <Main>
+        <Main
+          style={{
+            maxHeight: isLoading ? "100vh" : "auto",
+            overflow: isLoading ? "hidden" : "visible",
+          }}
+        >
+          <LoadingOverlay
+            initial={{ opacity: 1 }}
+            animate={{ opacity: isLoading ? 1 : 0 }}
+            transition={{ duration: 2, delay: 1, ease: "easeIn" }}
+          >
+            <ColFlex $gap={16}>
+              <ProgressBar
+                variant="tile"
+                value={isLoading ? 80 : 100}
+                style={{ width: "40vw" }}
+              />
+              {isLoading ? "Loading..." : "Hello!"}
+            </ColFlex>
+          </LoadingOverlay>
           {showCursor && <StyledCursor emoji={emoji} cursorType={cursorType} />}
-
           <Section>
             <Container>
               <Frame>
@@ -181,7 +191,7 @@ const AppContent = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoading ? 0 : 1 }}
-        transition={{ duration: 2 }}
+        transition={{ duration: 2, delay: 1, ease: "easeIn" }}
       >
         <div className="noise"></div>
       </motion.div>

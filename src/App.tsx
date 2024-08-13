@@ -95,9 +95,11 @@ const LoadingOverlay = styled(motion.div)`
   pointer-events: none;
 `;
 
+const isDev = process.env.NODE_ENV === "development";
+
 const AppContent = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [overlayComplete, setOverlayComplete] = useState(false);
+  const [isLoading, setIsLoading] = useState(!isDev);
+  const [overlayComplete, setOverlayComplete] = useState(isDev ? true : false);
   const { showCursor, emoji, cursorType } = useCursor();
   const { isMobile } = useWindowSize();
   const { scrollYProgress } = useScroll();
@@ -130,7 +132,7 @@ const AppContent = () => {
           }}
         >
           <LoadingOverlay
-            initial={{ opacity: 1 }}
+            initial={{ opacity: isDev ? 0 : 1 }}
             animate={{
               opacity: isLoading ? 1 : 0,
             }}
@@ -178,6 +180,7 @@ const AppContent = () => {
                 borderLeft: isMobile
                   ? "none"
                   : "2px solid rgba(255, 255, 255, 0.3)",
+                width: "100%",
               }}
             >
               <Section>

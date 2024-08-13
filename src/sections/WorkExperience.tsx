@@ -1,20 +1,12 @@
 import React, { SyntheticEvent } from "react";
-import {
-  Button,
-  GroupBox,
-  Select,
-  TextInput,
-  Window,
-  WindowContent,
-  WindowHeader,
-} from "react95";
+import { Button, TextInput } from "react95";
 import styled from "styled-components";
-import { ColFlex, RowFlex } from "../components/Flex";
+import { Title } from "../App";
+import { ColFlex } from "../components/Flex";
 import { CursorType } from "../components/StyledCursor";
 import Text from "../components/Text";
-import { Header, Title } from "../App";
 import { useCursor } from "../context/CursorContext";
-import { experiences } from "../experience"; // Import experiences
+import { experiences } from "../experience";
 
 const Container = styled(ColFlex).attrs({ $gap: 16 })`
   width: 100%;
@@ -26,86 +18,122 @@ const Container = styled(ColFlex).attrs({ $gap: 16 })`
   }
 `;
 
-const ToggleCursorButton = styled(Button)`
-  width: fit-content;
+const Grid = styled.div`
+  display: grid;
+  width: 100%;
+  gap: 16px;
 `;
 
-const StyledTextInput = styled(TextInput)`
-  width: 64px;
+const Row = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+`;
+
+const Column = styled.div`
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
 `;
 
 const WorkExperience = () => {
-  const {
-    showCursor,
-    setShowCursor,
-    cursorType,
-    setCursorType,
-    emoji,
-    setEmoji,
-  } = useCursor();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setEmoji(e.target.value);
-
-  const toggleCursor = () => {
-    setShowCursor(!showCursor);
-  };
-
-  const handleCursorTypeChange = (
-    selectedOption: { value: CursorType },
-    options: { fromEvent: Event | SyntheticEvent<Element, Event> }
-  ) => {
-    setCursorType(selectedOption.value);
-  };
-
-  const options = Object.values(CursorType).map((type) => ({
-    value: type,
-    label: type,
-  }));
+  const { showCursor, setShowCursor, setCursorType, setEmoji } = useCursor();
 
   return (
     <Container>
       <Title>
         <Text>work experience</Text>
       </Title>
-      <ColFlex $gap={16}>
-        {experiences.map((experience, index) => (
-          <GroupBox
-            key={index}
-            label={
-              experience.companyLink ? (
-                <a href={`${experience.companyLink}`}>{experience.company}</a>
-              ) : (
-                experience.company
-              )
-            }
-          >
-            <RowFlex $gap={16}>
-              <RowFlex $gap={8} $grow={1}>
+
+      <Grid>
+        {experiences.map((experience) => (
+          <Row>
+            <Column>
+              <ColFlex $gap={8} $grow={1}>
+                <p>Start: </p>
+                <TextInput
+                  value={`${experience.startMonth} ${experience.startYear}`}
+                  style={{ width: "100%" }}
+                />
+              </ColFlex>
+              <ColFlex $gap={8} $grow={1}>
+                <p>End: </p>
+                <TextInput
+                  value={
+                    experience.endYear && experience.endMonth
+                      ? `${experience.endMonth} ${experience.endYear}`
+                      : "Present"
+                  }
+                  style={{ width: "100%" }}
+                />
+              </ColFlex>
+            </Column>
+            <Column>
+              <ColFlex $gap={8} $grow={1}>
+                <p>Company: </p>
+                <TextInput
+                  value={experience.company}
+                  style={{ width: "100%" }}
+                />
+              </ColFlex>
+              <ColFlex $gap={8} $grow={1}>
                 <p>Role: </p>
                 <TextInput
                   value={experience.position}
                   style={{ width: "100%" }}
                 />
-              </RowFlex>
-              <RowFlex $gap={8} $grow={2}>
-                <p>Duration: </p>
-                <TextInput
-                  value={`${experience.startMonth} ${experience.startYear} - ${
-                    experience.endYear && experience.endMonth
-                  } ${!experience.endYear ? "Present" : experience.endYear}`}
-                  style={{ width: "100%" }}
-                />
-              </RowFlex>
-            </RowFlex>
-            {/* <ul>
-                  {experience.responsibilities.map((responsibility, idx) => (
-                    <li key={idx}>- {responsibility}</li>
-                  ))}
-                </ul> */}
-          </GroupBox>
+              </ColFlex>
+            </Column>
+          </Row>
+          // <GroupBox
+          //   key={index}
+          //   label={
+          //     experience.companyLink ? (
+          //       <a href={`${experience.companyLink}`}>{experience.company}</a>
+          //     ) : (
+          //       experience.company
+          //     )
+          //   }
+          // >
+          //   <RowFlex $gap={16}>
+          //     <ColFlex $gap={8} $grow={1}>
+          //       <p>Start: </p>
+          //       <TextInput
+          //         value={`${experience.startMonth} ${experience.startYear}`}
+          //         style={{ width: "100%" }}
+          //       />
+          //     </ColFlex>
+          //     <ColFlex $gap={8} $grow={1}>
+          //       <p>End: </p>
+          //       <TextInput
+          //         value={
+          //           experience.endYear && experience.endMonth
+          //             ? `${experience.endMonth} ${experience.endYear}`
+          //             : "Present"
+          //         }
+          //         style={{ width: "100%" }}
+          //       />
+          //     </ColFlex>
+          //   </RowFlex>
+          //   <RowFlex $gap={16}>
+          //     <ColFlex $gap={8} $grow={1}>
+          //       <p>Company: </p>
+          //       <TextInput
+          //         value={experience.company}
+          //         style={{ width: "100%" }}
+          //       />
+          //     </ColFlex>
+          //     <ColFlex $gap={8} $grow={1}>
+          //       <p>Role: </p>
+          //       <TextInput
+          //         value={experience.position}
+          //         style={{ width: "100%" }}
+          //       />
+          //     </ColFlex>
+          //   </RowFlex>
+          // </GroupBox>
         ))}
-      </ColFlex>
+      </Grid>
     </Container>
   );
 };

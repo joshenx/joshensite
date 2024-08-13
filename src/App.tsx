@@ -1,23 +1,16 @@
 import Spline from "@splinetool/react-spline";
 import { motion, useScroll, useSpring } from "framer-motion";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { ProgressBar } from "react95";
 import styled from "styled-components";
 import FadeInWhenVisible from "./animations/FadeInWhenVisible";
-import {
-  ColFlex,
-  FlexContainer,
-  ResponsiveFlex,
-  RowFlex,
-} from "./components/Flex";
+import { ColFlex, ResponsiveFlex, RowFlex } from "./components/Flex";
 import OverlayContainer from "./components/OverlayContainer.js";
 import StyledCursor from "./components/StyledCursor";
 import { CursorProvider, useCursor } from "./context/CursorContext";
-import Loader from "./Loader.jsx";
+import useWindowSize from "./hooks/useMediaQuery.js";
 import Settings from "./sections/Settings";
 import WorkExperience from "./sections/WorkExperience";
-import useWindowSize from "./hooks/useMediaQuery.js";
-import Text from "./components/Text.js";
-import { ProgressBar } from "react95";
 
 export const Container = styled.div`
   height: 100vh;
@@ -104,6 +97,7 @@ const LoadingOverlay = styled(motion.div)`
 
 const AppContent = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [overlayComplete, setOverlayComplete] = useState(false);
   const { showCursor, emoji, cursorType } = useCursor();
   const { isMobile } = useWindowSize();
   const { scrollYProgress } = useScroll();
@@ -131,14 +125,19 @@ const AppContent = () => {
         <SideProgressBar style={{ scaleY }} />
         <Main
           style={{
-            maxHeight: isLoading ? "100vh" : "auto",
-            overflow: isLoading ? "hidden" : "visible",
+            maxHeight: !overlayComplete ? "100vh" : "auto",
+            overflow: !overlayComplete ? "hidden" : "visible",
           }}
         >
           <LoadingOverlay
             initial={{ opacity: 1 }}
-            animate={{ opacity: isLoading ? 1 : 0 }}
+            animate={{
+              opacity: isLoading ? 1 : 0,
+            }}
             transition={{ duration: 2, delay: 1, ease: "easeIn" }}
+            onAnimationComplete={() => {
+              setTimeout(() => setOverlayComplete(true), 3000);
+            }}
           >
             <ColFlex $gap={16}>
               <ProgressBar
